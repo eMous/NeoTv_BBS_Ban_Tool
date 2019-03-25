@@ -158,8 +158,8 @@ var current_page
             return has_logged
         }
         // post页
-        var res = new RegExp(/mod=viewthread/).test(current_page_url)
-        if (res) {
+        var ele = $("div#postlist")
+        if (ele.length != 0) {
             current_page = POST_PAGE
             var atags = $("div.login_yet a:visible")
             for (var i = 0, length = atags.length; i < length; ++i) {
