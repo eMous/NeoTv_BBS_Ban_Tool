@@ -2,6 +2,7 @@
 <p><a href="http://bbs.niuyou5.com/home.php?mod=space&uid=2122242" target="_blank" rel="noopener noreferrer"><img src="http://uc.neotv.com.cn/avatar.php?uid=2122242&size=big"></a></p>
 
 **author: anon**
+
 ![](https://img.shields.io/github/tag-date/eMous/NeoTv_BBS_Ban_Tool.svg)
 
 这个工具可以在你登录[NeoTv论坛](http://bbs.niuyou5.com)后为你提供屏蔽用户的功能。
