@@ -1,9 +1,10 @@
 // ==UserScript==
 // @name         NeoTv Ban Tool
 // @namespace    http://tampermonkey.net/
-// @version      0.1
+// @version      0.2
 // @require      https://code.jquery.com/jquery-2.1.4.min.js
-
+// @downloadURL  https://github.com/eMous/NeoTv_BBS_Ban_Tool/raw/master/BanTool.js
+// @updateURL    https://github.com/eMous/NeoTv_BBS_Ban_Tool/raw/master/BanTool.js
 // @description  NeoTv BBS 屏蔽工具
 // @author       anon
 // @match        *://bbs.niuyou5.com/*
@@ -31,14 +32,15 @@ const KEY_BAN_POST = "ban_post"
 
 // ----常量----
 const KEY_LISTEN_SIZE = 20
+const POST_PAGE = "POST_PAGE"
+const INDEX_PAGE = "INDEX_PAGE"
 // 口令常量(务必设置成大写字母)
 const CLEAR_COMMAND = "CLEAR" // 清除屏蔽名单：输入CLEAR
 const BAN_UID = "BANUID" // 屏蔽特定UID:输入(P结尾)BANUID123456P
 const FREE_UID = "FREEUID" // 取消屏蔽特定UID：输入(P结尾)FREEUID123456P
 const SHOW_BAN_LIST = "SHOWBANLIST" // 显示屏蔽列表：输入SHOWBANLIST
 const BAN_POST = "BANPOST" // 在主页过滤屏蔽列表中用户作为楼主发布的帖子
-const POST_PAGE = "POST_PAGE"
-const INDEX_PAGE = "INDEX_PAGE"
+
 // 屏蔽列表
 var ban_id_list
 var ban_post
