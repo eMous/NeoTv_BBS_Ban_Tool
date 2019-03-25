@@ -1,10 +1,4 @@
-
 <h2 align="center">你也想<s>(假装)</s>享受Tager和小黄权限别人的快乐？</h2>
-
-## 
-
-
-----
 <p><a href="http://bbs.niuyou5.com/home.php?mod=space&uid=2122242" target="_blank" rel="noopener noreferrer"><img src="http://uc.neotv.com.cn/avatar.php?uid=2122242&size=big"></a></p>
 
 **author: anon**
@@ -27,7 +21,7 @@
 <p align="center"><img width="1080"src="https://raw.githubusercontent.com/eMous/__ResourceRepository/master/NeoTv_BBS_Ban_Tool/15534848382.jpg"></p>
 
 
-######命令列表 <功能(js文件中的常量名)>：
+###### 命令列表 <功能(js文件中的常量名)>：
 - 清除所有屏蔽的用户(CLEAR_COMMAND)
 键入CLEAR
 
