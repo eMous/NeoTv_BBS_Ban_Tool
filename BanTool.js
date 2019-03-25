@@ -3,6 +3,7 @@
 // @namespace    http://tampermonkey.net/
 // @version      0.2
 // @require      https://code.jquery.com/jquery-2.1.4.min.js
+// @require      https://github.com/dankogai/js-base64/raw/master/base64.js
 // @downloadURL  https://github.com/eMous/NeoTv_BBS_Ban_Tool/raw/master/BanTool.js
 // @updateURL    https://github.com/eMous/NeoTv_BBS_Ban_Tool/raw/master/BanTool.js
 // @description  NeoTv BBS 屏蔽工具
@@ -25,7 +26,14 @@ function UniqueArrary(arr) {
     }
     return hash;
 }
-
+function IsJsonString(str) {
+    try {
+        JSON.parse(str);
+    } catch (e) {
+        return false;
+    }
+    return true;
+}
 // ----持久化存储----
 const KEY_BAN_ID_LIST = "ban_id_list"
 const KEY_BAN_POST = "ban_post"
@@ -40,6 +48,8 @@ const BAN_UID = "BANUID" // 屏蔽特定UID:输入(P结尾)BANUID123456P
 const FREE_UID = "FREEUID" // 取消屏蔽特定UID：输入(P结尾)FREEUID123456P
 const SHOW_BAN_LIST = "SHOWBANLIST" // 显示屏蔽列表：输入SHOWBANLIST
 const BAN_POST = "BANPOST" // 在主页过滤屏蔽列表中用户作为楼主发布的帖子
+const UPLOAD_LIST = "UPLOADLIST" // 将配置同步到NeoTV个人信息页面
+const DOWNLOAD_LIST = "DOWNLOADLIST" // 将个人信息页存储的配置同步到本地
 
 // 屏蔽列表
 var ban_id_list
@@ -55,16 +65,75 @@ var current_page
 (function () {
     'use strict';
 
-//     GM_xmlhttpRequest({ //获取列表
-//         method : "POST",
-//     //   headers: {"Accept": "application/json"},
-//       url : "http://bbs.niuyou5.com/home.php?mod=space&uid=2122242",
-//         onload : function (response) {
-//            console.log(response.responseText);
-//       }
-//    });
-
     var myID
+    // 使用NeoTV空间存储黑名单UID_Name的json
+    function uploadBanIDListToNeoTVSite() {
+        // 确保不在iframe里
+        if (self == top) {
+            GM_xmlhttpRequest({ //获取列表
+                method: "GET",
+                url: "http://bbs.niuyou5.com/home.php?mod=spacecp&ac=profile&op=work",
+                onload: function (response) {
+
+                    // 创建一个profile页面的iframe
+                    var dom_hidden = document.body.appendChild(document.createElement("iframe"));
+                    dom_hidden.style.display = "none";
+                    dom_hidden.contentDocument.write(response.responseText);
+                    // 设置List存储到company字段
+                    var jq_iframe = $(dom_hidden.contentDocument)
+                    var company = jq_iframe.find("input#company")
+                    company.val(Base64.encode(GM_getValue(KEY_BAN_ID_LIST)))
+                    var company_privacy = jq_iframe.find("select[name='privacy\[company\]']")
+                    company_privacy.val(3)
+                    // 构造表单
+                    var jq_form = jq_iframe.find("form[target='frame_profile']")
+                    var form = new FormData(jq_form[0]);
+                    // 使用ajax,捕获响应
+                    $.ajax({
+                        url: 'http://bbs.niuyou5.com/home.php?mod=spacecp&ac=profile&op=work',
+                        data: form,
+                        cache: false,
+                        contentType: false,
+                        processData: false,
+                        method: 'POST',
+                        success: function (data) {
+                            alert("屏蔽列表已同步至个人数据中.");
+                        }
+                    });
+                    dom_hidden.remove()
+                }
+            });
+        }
+    }
+    // 将存在NeoTV空间中的黑名单下载到本地
+    function downloadBanIDListFromNeoTVSite() {
+        // 确保不在iframe里
+        if (self == top) {
+            GM_xmlhttpRequest({ //获取列表
+                method: "GET",
+                url: "http://bbs.niuyou5.com/home.php?mod=spacecp&ac=profile&op=work",
+                onload: function (response) {
+
+                    // 创建一个profile页面的iframe
+                    var dom_hidden = document.body.appendChild(document.createElement("iframe"));
+                    dom_hidden.style.display = "none";
+                    dom_hidden.contentDocument.write(response.responseText);
+                    // 设置List存储到company字段
+                    var jq_iframe = $(dom_hidden.contentDocument)
+                    var company = jq_iframe.find("input#company")
+                    var jsonStr = Base64.decode(company.val())
+                    if (!IsJsonString(jsonStr)) {
+                        alert("格式错误!")
+                    } else {
+                        ban_id_list = JSON.parse(jsonStr)
+                        GM_setValue(KEY_BAN_ID_LIST, jsonStr)
+                        alert("已成功同步到本计算机.")
+                    }
+                    dom_hidden.remove()
+                }
+            });
+        }
+    }
     // 判断自身是否登陆
     function hasLogged() {
         var has_logged = false
@@ -225,6 +294,21 @@ var current_page
             ban_post = !ban_post
             GM_setValue(KEY_BAN_POST, ban_post)
             alert("ban_post状态:" + ban_post)
+            window.location.reload()
+        }
+
+        // 上传屏蔽列表
+        var ret = keycode_queue.split(UPLOAD_LIST)
+        if (ret.length == 2) {
+            key_sequence = new Array()
+            uploadBanIDListToNeoTVSite()
+        }
+
+        // 下载屏蔽列表
+        var ret = keycode_queue.split(DOWNLOAD_LIST)
+        if (ret.length == 2) {
+            key_sequence = new Array()
+            downloadBanIDListFromNeoTVSite()
             window.location.reload()
         }
 

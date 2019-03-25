@@ -5,7 +5,7 @@
 
 ![](https://img.shields.io/github/tag-date/eMous/NeoTv_BBS_Ban_Tool.svg)
 
-这个工具可以在你登录[NeoTv论坛](http://bbs.niuyou5.com)后为你提供屏蔽用户的功能。
+这个工具可以在你登录[NeoTV论坛](http://bbs.niuyou5.com)后为你提供屏蔽用户的功能。
 
 #### 现有功能
 功能开启的前提是当前Web页已经登录到牛坛，现有功能分为Web界面操作和键盘输入两种输入方式。
@@ -39,14 +39,20 @@
 
 - 开关策略，决定是否在主页过滤屏蔽列表中用户作为楼主的帖子(BAN_POST)
 键入BAN_POST
-######自定义命令：
-请务必确保你在JS脚本中设置的常量值是: **大写字母组成的字符串**
+
+- 从NeoTV个人数据中下载屏蔽列表到本地(DOWNLOAD_LIST)
+键入DOWNLOADLIST
+
+- 从本地上传屏蔽列表到NeoTV个人数据<公司>中(UPLOAD_LIST)
+键入UPLOADLIST
+
+######自定义命令常量：
+请务必确保你在JS脚本中设置的常量值是: **大写字母组成的字符串**。
 
 #### 相关存储
 当前列表都存储在本地，浏览器cache清除后列表即被清空。
 
 ### TODO
 - 导入和导出过滤名单。
-- 使用NeoTv BBS自身存储功能。
 - 节操值过滤。
 - 用户空间页面注册添加或解除屏蔽按钮。
