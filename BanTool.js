@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         NeoTv Ban Tool
 // @namespace    http://tampermonkey.net/
-// @version      0.2
+// @version      0.3
 // @require      https://code.jquery.com/jquery-2.1.4.min.js
 // @require      https://github.com/dankogai/js-base64/raw/master/base64.js
 // @downloadURL  https://github.com/eMous/NeoTv_BBS_Ban_Tool/raw/master/BanTool.js
